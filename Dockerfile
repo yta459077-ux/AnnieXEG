@@ -29,18 +29,17 @@ RUN rm -f /usr/lib/python3.13/EXTERNALLY-MANAGED
 RUN uv pip install --upgrade setuptools wheel
 
 COPY pytgcalls /app/pytgcalls
-COPY ntgcalls /app/ntgcalls
-COPY ntgcalls-2.1.0.dist-info /app/ntgcalls-2.1.0.dist-info
 
 COPY requirements.txt .
 
-RUN grep -v -E -i '^(py-tgcalls|pytgcalls|deepai|numba|llvmlite|quimb)' requirements.txt > filtered.txt && \
+RUN grep -v -E -i '^(py-tgcalls|pytgcalls|ntgcalls|deepai|numba|llvmlite|quimb)' requirements.txt > filtered.txt && \
     uv pip install --no-cache -r filtered.txt
 
 RUN uv pip install --no-cache \
     uvloop \
     g4f \
-    curl_cffi
+    curl_cffi \
+    ntgcalls
 
 RUN mkdir -p /etc/yt-dlp && \
     echo "--remote-components ejs:github" > /etc/yt-dlp.conf
@@ -48,7 +47,5 @@ RUN mkdir -p /etc/yt-dlp && \
 RUN yt-dlp "ytsearch1:test" --dump-json > /dev/null 2>&1 || true
 
 COPY . .
-
-RUN mv ntgcalls/ntgcalls.so ./ntgcalls.so && rm -rf ntgcalls
 
 CMD ["python3", "run.py"]

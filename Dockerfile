@@ -49,9 +49,12 @@ RUN rm -f /usr/lib/python3.13/EXTERNALLY-MANAGED
 RUN uv pip install --upgrade setuptools wheel
 
 # ========================================================
-# 🧬 LOCAL PYTGCALLS
+# 🧬 LOCAL PYTGCALLS & NATIVE NTGCALLS (THE BEAST)
 # ========================================================
+# هنا التعديل عشان المحرك النيتف ينسخ صح والسيرفر يقراه
 COPY pytgcalls /app/pytgcalls
+COPY ntgcalls /app/ntgcalls
+COPY ntgcalls-2.1.0.dist-info /app/ntgcalls-2.1.0.dist-info
 
 # ========================================================
 # ⚡ INSTALL DEPENDENCIES

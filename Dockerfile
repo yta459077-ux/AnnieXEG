@@ -7,7 +7,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
     UV_SYSTEM_PYTHON=1 \
     DENO_INSTALL="/root/.deno" \
-    PATH="/root/.deno/bin:/usr/bin:${PATH}"
+    PATH="/root/.deno/bin:/usr/bin:${PATH}" \
+    PYTHONPATH="/app"
 
 WORKDIR /app
 
@@ -29,10 +30,11 @@ RUN rm -f /usr/lib/python3.13/EXTERNALLY-MANAGED
 RUN uv pip install --upgrade setuptools wheel
 
 COPY pytgcalls /app/pytgcalls
+COPY yt_dlp /app/yt_dlp
 
 COPY requirements.txt .
 
-RUN grep -v -E -i '^(py-tgcalls|pytgcalls|ntgcalls|deepai|numba|llvmlite|quimb)' requirements.txt > filtered.txt && \
+RUN grep -v -E -i '^(py-tgcalls|pytgcalls|ntgcalls|yt-dlp|ytdlp|deepai|numba|llvmlite|quimb)' requirements.txt > filtered.txt && \
     uv pip install --no-cache -r filtered.txt
 
 RUN uv pip install --no-cache \
@@ -44,7 +46,7 @@ RUN uv pip install --no-cache \
 RUN mkdir -p /etc/yt-dlp && \
     echo "--remote-components ejs:github" > /etc/yt-dlp.conf
 
-RUN yt-dlp "ytsearch1:test" --dump-json > /dev/null 2>&1 || true
+RUN python3 -m yt_dlp "ytsearch1:test" --dump-json > /dev/null 2>&1 || true
 
 COPY . .
 

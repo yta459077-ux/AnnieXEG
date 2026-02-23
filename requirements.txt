@@ -1,0 +1,98 @@
+# ===== Core Async & Performance (أقصى سرعة) ====
+uvloop==0.22.1
+aiofiles
+# تفعيل تسريع DNS و C-Parsin
+aiohttp[speedups]
+httpx[http2,brotli]>=0.28.1
+psutil
+cachetools
+brotli
+certifi
+# أسرع مكتبة JSON في العالم (مهمة لـ FastAPI)
+orjson
+flet
+# ===== Crypto / Security =====
+argon2-cffi
+pycryptodome
+pytgcrypto
+
+# ===== Scheduling =====
+apscheduler
+
+# ===== Media / Audio / Video =====
+yt-dlp>=2026.02.21
+ffmpeg-python
+pydub
+mutagen
+hachoir
+# ⚠️ تم التبديل لنسخة السيرفرات (أسرع وأخف وتحل مشكلة المساحة)
+opencv-python-headless
+numpy
+pillow>=12.0.0
+wget
+
+# ===== Arabic Text Support (لحل مشكلة العربي المقطع في الصور) =====
+arabic-reshaper
+python-bidi
+
+# ===== Telegram / Calls =====
+ntgcalls>=2.1.0
+kurigram>=2.2.19
+pyromod
+
+# ===== Web / API / Servers =====
+fastapi
+flask
+# تفعيل Cython Parsers للسرعة القصوى
+uvicorn[standard]
+python-multipart
+python-dotenv
+requests
+
+# ===== Databases =====
+motor
+pymongo
+
+# ===== Search / AI / TTS =====
+edge-tts
+gtts
+googletrans
+gpytranslate
+SpeechRecognition
+lyricsgenius
+spotipy
+lexica-api
+nekosbest
+g4f
+
+# ===== Scraping / Parsing =====
+beautifulsoup4
+bs4
+python-whois
+pyyaml
+unidecode
+rapidfuzz
+fuzzywuzzy
+python-Levenshtein
+
+# ===== Utilities =====
+pyfiglet
+pyshorteners
+qrcode
+telegraph
+speedtest-cli
+future
+gitpython
+heroku3
+
+# ===== Images =====
+bing_image_downloader
+
+# ===== CURL (Ultra Fast HTTP for yt-dlp fallback) =====
+curl_cffi>=0.14.0
+
+# ===== Time / Locale =====
+pytz
+py-yt-search
+# ===== YouTube Search (patched fork) =====
+git+https://github.com/q058961234-web/youtube-search-python.git

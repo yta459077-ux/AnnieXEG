@@ -634,6 +634,10 @@ class YoutubeDL:
         if params is None:
             params = {}
         self.params = params
+        
+        # 🔥 الإضافة السحرية: حقن ejs:github إجبارياً في إعدادات المكتبة دايماً!
+        self.params['remote_components'] = self.params.get('remote_components') or 'ejs:github'
+        
         self._ies = {}
         self._ies_instances = {}
         self._pps = {k: [] for k in POSTPROCESS_WHEN}

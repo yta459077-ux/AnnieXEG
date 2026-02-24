@@ -37,7 +37,7 @@ python-bidi
 # ===== Telegram / Calls =====
 kurigram>=2.2.19
 pyromod
-
+ntgcalls
 # ===== Web / API / Servers =====
 fastapi
 flask

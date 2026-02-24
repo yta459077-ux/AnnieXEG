@@ -634,10 +634,6 @@ class YoutubeDL:
         if params is None:
             params = {}
         self.params = params
-        
-        # 🔥 الإضافة السحرية: حقن ejs:github إجبارياً في إعدادات المكتبة دايماً!
-        self.params['remote_components'] = self.params.get('remote_components') or 'ejs:github'
-        
         self._ies = {}
         self._ies_instances = {}
         self._pps = {k: [] for k in POSTPROCESS_WHEN}
@@ -739,7 +735,12 @@ class YoutubeDL:
         self.params['js_runtimes'] = self.params.get('js_runtimes', {'deno': {}})
         self._clean_js_runtimes(self.params['js_runtimes'])
 
-        self.params['remote_components'] = set(self.params.get('remote_components', ()))
+        rc = self.params.get('remote_components')
+        if not rc:
+            rc = ['ejs:github']
+        elif isinstance(rc, str):
+            rc = [rc]
+        self.params['remote_components'] = set(rc)
         self._clean_remote_components(self.params['remote_components'])
 
         self.params['compat_opts'] = set(self.params.get('compat_opts', ()))
@@ -794,8 +795,8 @@ class YoutubeDL:
         self.params.setdefault('print_to_file', {})
 
         # Compatibility with older syntax
-        if not isinstance(params['forceprint'], dict):
-            self.params['forceprint'] = {'video': params['forceprint']}
+        if not isinstance(params.get('forceprint', {}), dict):
+            self.params['forceprint'] = {'video': params.get('forceprint', {})}
 
         if auto_init:
             self.add_default_info_extractors()

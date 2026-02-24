@@ -61,7 +61,7 @@ COPY yt_dlp /app/yt_dlp
 COPY requirements.txt .
 
 # 1. فلترة المكتبات القديمة والمحلية (تمت إضافة yt-dlp للفلترة)
-RUN grep -v -E -i '^(py-tgcalls|pytgcalls|deepai|numba|llvmlite|quimb|yt-dlp)' requirements.txt > filtered.txt && \
+RUN grep -v -E -i '^(py-tgcalls|pytgcalls|deepai|numba|llvmlite|quimb|yt-dlp|yt_dlp)' requirements.txt > filtered.txt && \
     uv pip install --no-cache -r filtered.txt
 
 # 2. تثبيت المكتبات السريعة (تمت إضافة ntgcalls هنا)
@@ -69,7 +69,7 @@ RUN uv pip install --no-cache \
     uvloop \
     g4f \
     curl_cffi \
-    ntgcalls==2.0.1
+    ntgcalls
 
 # ========================================================
 # ⚙️ YOUTUBE ENGINE & CACHE WARMUP (THE SPEED FIX)
@@ -78,7 +78,6 @@ RUN mkdir -p /etc/yt-dlp && \
     echo "--remote-components ejs:github" > /etc/yt-dlp.conf
 
 # 🔥 السر هنا: بنشغل أمر وهمي لـ yt-dlp عشان يجبره يحمل الـ ejs من جيتهاب ويخزنه في كاش الدوكر للأبد!
-# تم تعديل الأمر ليقرأ من المجلد المحلي الخاص بك
 RUN python3 -m yt_dlp "ytsearch1:test" --dump-json > /dev/null 2>&1 || true
 
 # ========================================================

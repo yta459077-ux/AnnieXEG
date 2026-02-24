@@ -14,7 +14,6 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
     UV_SYSTEM_PYTHON=1 \
     DENO_INSTALL="/root/.deno" \
-    PYTHONPATH="/app" \
     PATH="/root/.deno/bin:/usr/bin:${PATH}"
 
 WORKDIR /app
@@ -42,15 +41,17 @@ RUN ln -sf /usr/bin/python3.13 /usr/bin/python3 && \
 # ========================================================
 # 💉 THE FIX: REMOVE EXTERNALLY-MANAGED FLAG
 # ========================================================
+# هذا السطر هو الحل! نقوم بحذف ملف الحماية لنسمح بالتثبيت
 RUN rm -f /usr/lib/python3.13/EXTERNALLY-MANAGED
 
 # ========================================================
 # 📦 PYTHON PREP
 # ========================================================
+# الآن سيعمل هذا الأمر بدون مشاكل
 RUN uv pip install --upgrade setuptools wheel
 
 # ========================================================
-# 🧬 LOCAL MODULES (PYTGCALLS & YT-DLP)
+# 🧬 LOCAL PYTGCALLS
 # ========================================================
 COPY pytgcalls /app/pytgcalls
 COPY yt_dlp /app/yt_dlp
@@ -60,25 +61,21 @@ COPY yt_dlp /app/yt_dlp
 # ========================================================
 COPY requirements.txt .
 
-# 1. فلترة المكتبات القديمة والمحلية (تمت إضافة yt-dlp للفلترة)
-RUN grep -v -E -i '^(py-tgcalls|pytgcalls|deepai|numba|llvmlite|quimb|yt-dlp|yt_dlp)' requirements.txt > filtered.txt && \
+# 1. فلترة المكتبات القديمة والمحلية
+RUN grep -v -E -i '^(py-tgcalls|pytgcalls|deepai|numba|llvmlite|quimb)' requirements.txt > filtered.txt && \
     uv pip install --no-cache -r filtered.txt
 
-# 2. تثبيت المكتبات السريعة (تمت إضافة ntgcalls هنا)
+# 2. تثبيت المكتبات السريعة
 RUN uv pip install --no-cache \
     uvloop \
     g4f \
-    curl_cffi \
-    ntgcalls
+    curl_cffi
 
 # ========================================================
-# ⚙️ YOUTUBE ENGINE & CACHE WARMUP (THE SPEED FIX)
+# ⚙️ YOUTUBE ENGINE
 # ========================================================
 RUN mkdir -p /etc/yt-dlp && \
     echo "--remote-components ejs:github" > /etc/yt-dlp.conf
-
-# 🔥 السر هنا: بنشغل أمر وهمي لـ yt-dlp عشان يجبره يحمل الـ ejs من جيتهاب ويخزنه في كاش الدوكر للأبد!
-RUN python3 -m yt_dlp "ytsearch1:test" --dump-json > /dev/null 2>&1 || true
 
 # ========================================================
 # 📂 SOURCE CODE

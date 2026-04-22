@@ -27,7 +27,7 @@ hachoir
 # ⚠️ تم التبديل لنسخة السيرفرات (أسرع وأخف وتحل مشكلة المساحة)
 opencv-python-headless
 numpy
-pillow>=12.0.0
+pillow>=12.2.0
 wget
 
 # ===== Arabic Text Support (لحل مشكلة العربي المقطع في الصور) =====
